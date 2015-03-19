@@ -1,0 +1,17 @@
+{
+    "contents" : "# Exploratory Data Analysis Project 2\n# File Name : plot2.R\n\nsetwd(\"c:/Coursera/Exdata-Proj2\")\nlibrary(\"plyr\")\n\n\n# Load data\nif(!exists(\"NEI\")) {\n  NEI <- readRDS(\"data/summarySCC_PM25.rds\")\n}\n\nif(!exists(\"SCC\")) {\n  SCC <- readRDS(\"data/Source_Classification_Code.rds\")\n}\n\ndata<-transform(NEI,year=factor(year))\ndata <- data[data$fips==\"24510\",]\ndata$Emissions <- data$Emissions/1000\nhead(data)\nsumData <- ddply(data,c(\"year\"),summarize,Emissions=sum(Emissions))\nhead(sumData)\n\n#Generate plot1.png\npng(\"plot2.png\")\nplot(sumData$year,sumData$Emissions,type=\"n\",xlab=\"Year\",ylab=\"Emissions (thousands of tons)\",\n     main=\"Total PM2.5 Emissions in Baltimore City\",boxwex=0.05)\nlines(sumData$year,sumData$Emissions)\ndev.off()\n",
+    "created" : 1426706332562.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2654352825",
+    "id" : "30D41815",
+    "lastKnownWriteTime" : 1426781265,
+    "path" : "C:/Coursera/Exdata-Proj2/plot2.R",
+    "project_path" : "plot2.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

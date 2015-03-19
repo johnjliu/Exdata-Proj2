@@ -1,0 +1,17 @@
+{
+    "contents" : "# Exploratory Data Analysis Project 2\n# File Name : plot5.R\n\nsetwd(\"c:/Coursera/Exdata-Proj2\")\nlibrary(\"plyr\")\nlibrary(\"ggplot2\")\nlibrary(reshape2)\n\n\n# Load data\nif(!exists(\"NEI\")) {\n  NEI <- readRDS(\"data/summarySCC_PM25.rds\")\n}\n\nif(!exists(\"SCC\")) {\n  SCC <- readRDS(\"data/Source_Classification_Code.rds\")\n}\n\n#Process data\nif(!exists(\"NEI_SCC\")) {\n  df <- subset(SCC, select = c(\"SCC\", \"Short.Name\"))\n  NEI_SCC <- merge(NEI, df, by.x=\"SCC\", by.y=\"SCC\", all=TRUE)\n}\n\ndata <- subset(NEI_SCC, fips == \"24510\" & type ==\"ON-ROAD\", c(\"Emissions\", \"year\",\"type\"))\ndata <-transform(data,year=factor(year))\n\nplotdata<- aggregate(Emissions ~ year, data, sum)\n\n#Generate plot5.png\npng(\"plot5.png\")\nggplot(plotdata, aes(x=year, y=Emissions,group=1)) + geom_line(size=1) + \n  geom_point( size=5, shape=21, fill=\"white\") + xlab(\"Year\") + ylab(\"Emissions (tons)\") + \n  ggtitle(\"Motor Vehicle PM2.5 Emissions in Baltimore\")\ndev.off()",
+    "created" : 1426719606629.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2753705301",
+    "id" : "19FAD485",
+    "lastKnownWriteTime" : 1426778892,
+    "path" : "C:/Coursera/Exdata-Proj2/plot5.R",
+    "project_path" : "plot5.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

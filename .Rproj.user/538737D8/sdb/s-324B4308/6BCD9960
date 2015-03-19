@@ -1,0 +1,17 @@
+{
+    "contents" : "\n# Exploratory Data Analysis Project 2\n# File Name : plot4.R\n\nsetwd(\"c:/Coursera/Exdata-Proj2\")\nlibrary(\"plyr\")\nlibrary(\"ggplot2\")\nlibrary(reshape2)\n\n\n# Load data\nif(!exists(\"NEI\")) {\n  NEI <- readRDS(\"data/summarySCC_PM25.rds\")\n}\n\nif(!exists(\"SCC\")) {\n  SCC <- readRDS(\"data/Source_Classification_Code.rds\")\n}\n\n\n#Process data\nif(!exists(\"NEI_SCC\")) {\n  df <- subset(SCC, select = c(\"SCC\", \"Short.Name\"))\n  NEI_SCC <- merge(NEI, df, by.x=\"SCC\", by.y=\"SCC\", all=TRUE)\n}\n\ndata <- subset(NEI_SCC, grepl('Coal',NEI_SCC$Short.Name, fixed=TRUE), c(\"Emissions\", \"year\",\"type\", \"Short.Name\"))\ndata<-transform(data,year=factor(year))\ndata$Emissions <- data$Emissions/1000\nplotdata<- aggregate(Emissions ~ year, data, sum)\nhead(plotdata)\n\n#Generate plot4.png\npng(\"plot4.png\")\nggplot(plotdata, aes(x=year, y=Emissions,group=1)) + geom_line(size=1) + \n  geom_point( size=5, shape=21, fill=\"white\") + xlab(\"Year\") + \n  ylab(\"Emissions (thousands of tons)\") + ggtitle(\"Total United States PM2.5 Coal Emissions\")\ndev.off()",
+    "created" : 1426713530077.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2948240416",
+    "id" : "6BCD9960",
+    "lastKnownWriteTime" : 1426780839,
+    "path" : "C:/Coursera/Exdata-Proj2/plot4.R",
+    "project_path" : "plot4.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

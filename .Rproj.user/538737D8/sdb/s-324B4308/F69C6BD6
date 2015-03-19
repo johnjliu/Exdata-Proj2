@@ -1,0 +1,16 @@
+{
+    "contents" : "# Exploratory Data Analysis Project 2\n# File Name : plot1.R\n\nsetwd(\"c:/Coursera/Exdata-Proj2\")\nlibrary(\"plyr\")\n\n\n# Load data\nif(!exists(\"NEI\")) {\n  NEI <- readRDS(\"data/summarySCC_PM25.rds\")\n}\n\nif(!exists(\"SCC\")) {\n  SCC <- readRDS(\"data/Source_Classification_Code.rds\")\n}\n\n\n#Process data\ndata<-transform(NEI,year=factor(year))\ndata$Emissions <- data$Emissions/1000\nhead(data)\nsumData <- ddply(data,c(\"year\"),summarize,Emissions=sum(Emissions))\nhead(sumData)\n\n#Generate plot1.png\npng(\"plot1.png\")\nplot(sumData$year,sumData$Emissions,type=\"p\",xlab=\"Year\",ylab=\"Emissions (thousands of tons)\",main=\"Total US PM2.5 Emissions\",boxwex=0.1)\nlines(sumData$year,sumData$Emissions)\ndev.off()\n\n",
+    "created" : 1426703834146.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3039246305",
+    "id" : "F69C6BD6",
+    "lastKnownWriteTime" : 1426776748,
+    "path" : "C:/Coursera/Exdata-Proj2/plot1.R",
+    "project_path" : "plot1.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

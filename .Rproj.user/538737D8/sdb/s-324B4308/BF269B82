@@ -1,0 +1,17 @@
+{
+    "contents" : "# Exploratory Data Analysis Project 2\n# File Name : plot6.R\n\nsetwd(\"c:/Coursera/Exdata-Proj2\")\nlibrary(\"plyr\")\nlibrary(\"ggplot2\")\nlibrary(reshape2)\n\n\n# Load data\nif(!exists(\"NEI\")) {\n  NEI <- readRDS(\"data/summarySCC_PM25.rds\")\n}\n\nif(!exists(\"SCC\")) {\n  SCC <- readRDS(\"data/Source_Classification_Code.rds\")\n}\n\n#Process data\nif(!exists(\"NEI_SCC\")) {\n  df <- subset(SCC, select = c(\"SCC\", \"Short.Name\"))\n  NEI_SCC <- merge(NEI, df, by.x=\"SCC\", by.y=\"SCC\", all=TRUE)\n}\n\n\nplotData <- subset(NEI_SCC, (fips == \"24510\" | fips == \"06037\") & type ==\"ON-ROAD\", c(\"Emissions\", \"year\",\"type\", \"fips\"))\nplotData$City <- plotData$fips\nplotData$City <- factor(plotData$City, levels=c(\"06037\", \"24510\"), labels=c(\"Los Angeles, CA\", \"Baltimore, MD\"))\nplotData <- melt(plotData, id=c(\"year\", \"City\"), measure.vars=c(\"Emissions\"))\nplotData <- dcast(plotData, City + year ~ variable, sum)\nplotData[2:8,\"Change\"] <- diff(plotData$Emissions)\nplotData[c(1,5),4] <- 0\n\n\n#Generate plot6.png\npng(\"plot6.png\")\nggplot(data=plotData, aes(x=year, y=Change, group=City, color=City)) + geom_line() + \n  geom_point( size=4, shape=21, fill=\"white\") + xlab(\"Year\") + ylab(\"Change in Emissions (tons)\") + \n  ggtitle(\"Motor Vehicle PM2.5 Emissions Changes: Baltimore vs. LA\")\ndev.off()",
+    "created" : 1426719845622.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1679239523",
+    "id" : "BF269B82",
+    "lastKnownWriteTime" : 1426781524,
+    "path" : "C:/Coursera/Exdata-Proj2/plot6.R",
+    "project_path" : "plot6.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
